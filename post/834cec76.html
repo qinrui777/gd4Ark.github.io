@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc">
+<meta name="baidu-site-verification" content="hkLiBHH93D">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="解决 Laravel JWT 多表认证时获取不到当前认证用户的问题">
+
+
+
+
+  <meta name="keywords" content="后端,">
+
+
+
+
+  <link rel="alternate" href="/default" title="4Ark' Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://4ark.me/post/834cec76.html">
+
+
+<meta name="description" content="最近在做一个项目，需要多表认证，分别为admin和user表，我采用的JWT认证方式，但今天遇到了一个问题：使用Auth::user()返回null，也就是说无法获得当前认证的用户。">
+<meta name="keywords" content="后端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解决 Laravel JWT 多表认证时获取不到当前认证用户的问题">
+<meta property="og:url" content="https://4ark.me/post/834cec76.html">
+<meta property="og:site_name" content="4Ark&#39; Blog">
+<meta property="og:description" content="最近在做一个项目，需要多表认证，分别为admin和user表，我采用的JWT认证方式，但今天遇到了一个问题：使用Auth::user()返回null，也就是说无法获得当前认证的用户。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-03-11T11:38:32.707Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="解决 Laravel JWT 多表认证时获取不到当前认证用户的问题">
+<meta name="twitter:description" content="最近在做一个项目，需要多表认证，分别为admin和user表，我采用的JWT认证方式，但今天遇到了一个问题：使用Auth::user()返回null，也就是说无法获得当前认证的用户。">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+  <link href="/plugins/prettify/prettify.css" rel="stylesheet">
+
+
+<!--百度统计-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b733e1eaeacbf8f87d3be047f28c3973";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+    <title> 解决 Laravel JWT 多表认证时获取不到当前认证用户的问题 - 4Ark' Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">4Ark' Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          解决 Laravel JWT 多表认证时获取不到当前认证用户的问题
+        
+      </h1>
+
+      <time class="post-time">
+          2019-01-29
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p><div class="excerpt"><br>    最近在做一个项目，需要多表认证，分别为<code>admin</code>和<code>user</code>表，我采用的<code>JWT</code>认证方式，但今天遇到了一个问题：使用<code>Auth::user()</code>返回<code>null</code>，也就是说无法获得当前认证的用户。<br></div><br><a id="more"></a></p>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>最近在做一个项目，需要多表认证，分别为<code>admin</code>和<code>user</code>表，我采用的<code>JWT</code>认证方式，但今天遇到了一个问题：使用<code>Auth::user()</code>返回<code>null</code>，也就是说无法获得当前认证的用户。</p>
+<p>网上搜索后，并没有找到直接的解决方案，然后经过几次尝试居然误打误撞地解决了，所以特地记录下来，希望遇到同样问题的人不要再在这问题上耗费太多时间。</p>
+<p><strong>注意：</strong>这里并不介绍<code>JWT</code>的工作原理和配置，如果想理解更多请参考以下文章：</p>
+<ul>
+<li><a href="https://learnku.com/articles/10885/full-use-of-jwt" target="_blank" rel="noopener">JWT 完整使用详解</a></li>
+<li><a href="https://learnku.com/articles/10889/detailed-implementation-of-jwt-extensions" target="_blank" rel="noopener">JWT 扩展具体实现详解</a></li>
+</ul>
+<h2 id="大致配置"><a href="#大致配置" class="headerlink" title="大致配置"></a>大致配置</h2><p>先讲一下我的配置。</p>
+<p><code>auth.php</code>文件如下：</p>
+<pre><code class="php">return [
+
+    &#39;defaults&#39; =&gt; [
+        &#39;guard&#39; =&gt; env(&#39;AUTH_GUARD&#39;, &#39;admin&#39;),
+    ],
+
+    &#39;guards&#39; =&gt; [
+        &#39;admin&#39; =&gt; [
+            &#39;driver&#39; =&gt; &#39;jwt&#39;,                           #### 更改为JWT驱动
+            &#39;provider&#39; =&gt; &#39;admins&#39;,
+        ],
+        &#39;user&#39; =&gt; [
+            &#39;driver&#39; =&gt; &#39;jwt&#39;,                           #### 更改为JWT驱动
+            &#39;provider&#39; =&gt; &#39;users&#39;,
+        ],
+    ],
+
+    &#39;providers&#39; =&gt; [
+        &#39;admins&#39; =&gt; [
+            &#39;driver&#39; =&gt; &#39;eloquent&#39;,
+            &#39;model&#39;  =&gt; \App\Admin::class,        #### 指定用于token验证的模型类
+        ],
+        &#39;users&#39; =&gt; [
+            &#39;driver&#39; =&gt; &#39;eloquent&#39;,
+            &#39;model&#39;  =&gt; \App\User::class,        #### 指定用于token验证的模型类
+        ],
+    ],
+
+    &#39;passwords&#39; =&gt; [
+        //
+    ],
+
+];
+
+</code></pre>
+<h2 id="问题的根源"><a href="#问题的根源" class="headerlink" title="问题的根源"></a>问题的根源</h2><p>在<code>auth.php</code>中，我们有两个<code>guard</code>，而默认的<code>guard</code>指向的是<code>admin</code>，这时候如果是<code>user</code>经过的验证的话，是无法通过<code>Auth::user()</code>获取到当前认证用户信息的。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>解决方法很简单，只要使用<code>Auth::guard(&#39;user&#39;)</code>指明使用哪个<code>guard</code>即可，这里我是通过公用的控制器中的一个方法：</p>
+<pre><code class="php">public function getAuthUser($guard = &#39;admin&#39;){
+    return Auth::guard($guard)-&gt;user();
+}
+</code></pre>
+<p>感谢观看！</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <span>本文作者：</span>4Ark
+        </li>
+        <li class="post-copyright-link">
+          <span>本文链接：</span>
+          <a href="https://4ark.me//post/834cec76.html" title="解决 Laravel JWT 多表认证时获取不到当前认证用户的问题">https://4ark.me/post/834cec76.html</a>
+        </li>
+        <li class="post-copyright-license">
+          <span>版权： </span>
+          本站文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/后端/">后端</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/post/64f1da47.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Vue + Element UI + Lumen 实现通用表格功能 - 分页</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/post/6a052002.html">
+        <span class="next-text nav-default">理解 JavaScript 中的原型</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+      
+        
+
+
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+
+    <div id="gitalk-container"></div>
+
+    <script>
+        var gitalk = new Gitalk({
+            clientID: 'ca4ae20760cf27ad5c6c',
+            clientSecret: '671788fb8d6aed08906b70340a8ba3088ec03f39',
+            repo: 'gd4Ark.github.io',
+            owner: 'gd4Ark',
+            admin: 'gd4Ark',
+            id: location.pathname,      // Ensure uniqueness and length less than 50
+            distractionFreeMode: 'false'  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+
+
+      
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2018 -
+    
+    2019
+    <span class="footer-author">4Ark.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+<!--prettify代码高亮脚本引入-->
+
+    <script src="/plugins/prettify/prettify.js"></script>
+    <script type="text/javascript">
+    jQuery(function($){
+        $('pre').addClass('prettyprint');
+        prettyPrint();
+    });
+    </script>
+
+
+  </body>
+</html>

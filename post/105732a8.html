@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc">
+<meta name="baidu-site-verification" content="hkLiBHH93D">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="CSS题目系列（4） - 文字穿透遮罩层">
+
+
+
+
+  <meta name="keywords" content="前端,">
+
+
+
+
+  <link rel="alternate" href="/default" title="4Ark' Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://4ark.me/post/105732a8.html">
+
+
+<meta name="keywords" content="前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS题目系列（4） - 文字穿透遮罩层">
+<meta property="og:url" content="https://4ark.me/post/105732a8.html">
+<meta property="og:site_name" content="4Ark&#39; Blog">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006mS5wEgy1fxlh53ze9sj31es0lmq6s.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006mS5wEgy1fxlh53ze9sj31es0lmq6s.jpg">
+<meta property="og:updated_time" content="2019-03-11T11:38:32.701Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSS题目系列（4） - 文字穿透遮罩层">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006mS5wEgy1fxlh53ze9sj31es0lmq6s.jpg">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+  <link href="/plugins/prettify/prettify.css" rel="stylesheet">
+
+
+<!--百度统计-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b733e1eaeacbf8f87d3be047f28c3973";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+    <title> CSS题目系列（4） - 文字穿透遮罩层 - 4Ark' Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">4Ark' Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          CSS题目系列（4） - 文字穿透遮罩层
+        
+      </h1>
+
+      <time class="post-time">
+          2018-11-26
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <div class="excerpt"><br>    <img src="https://ws1.sinaimg.cn/large/006mS5wEgy1fxlh53ze9sj31es0lmq6s.jpg"><br></div>
+
+<a id="more"></a>
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>在我刚开始学习前端开发不久的时候，曾在一个网站看到过一个效果，当时费尽脑筋，又是<code>Canvas</code>、又是<code>SVG</code>，还是无法实现（其实<code>SVG</code>好像是有办法可以实现的，但当时觉得麻烦就没弄）。</p>
+<p>效果就是这样的：</p>
+<p><img src="https://ws1.sinaimg.cn/large/006mS5wEgy1fxlh53ze9sj31es0lmq6s.jpg" alt></p>
+<p>这个效果的难点在于，如何让文字穿透过遮罩层，但是这样好像很难。</p>
+<p>直到最近，我看到了张鑫旭大神的一篇<a href="https://www.zhangxinxu.com/wordpress/2011/04/%E5%B0%8Ftipcss3%E4%B8%8B%E7%9A%84%E6%B8%90%E5%8F%98%E6%96%87%E5%AD%97%E6%95%88%E6%9E%9C%E5%AE%9E%E7%8E%B0/" target="_blank" rel="noopener">文章</a>，文中讲述了如何给文字添加背景颜色（也可以是背景图片），顿时醍醐灌顶，想到了这样一个解决方案：</p>
+<ol>
+<li>里外两个层，尺寸一样，设置同一个背景图片。</li>
+<li>外层通过伪元素实现遮罩。</li>
+<li>里层绝对定位，将背景添加到文字上。</li>
+</ol>
+<p>可能我文字表达地不是很清晰，下面用代码讲解一下。</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>如果你点进了上面张鑫旭大神的那篇文章，你就知道主要是两行：</p>
+<ol>
+<li><code>-webkit-text-fill-color: transparent</code></li>
+<li><code>-webkit-background-clip: text</code></li>
+</ol>
+<p>简单说一下作用：</p>
+<p><code>-webkit-text-fill-color: transparent</code></p>
+<blockquote>
+<p>将文字颜色变成透明，但是经过尝试，发现使用<code>color：transparent</code>效果也一样，应该是浏览器为向后兼容所拟定的一个新属性，因为如果不支持文字添加背景，但又通过<code>color：transparent</code>将文字变成了透明，文字就显示不出来了。</p>
+</blockquote>
+<p><code>-webkit-background-clip: text</code></p>
+<blockquote>
+<p>背景被裁剪为文字的前景色。</p>
+</blockquote>
+<p>那么，下面我们试一下实现，这里只展示主要代码。</p>
+<pre><code class="html">&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;I ❤ CSS&lt;/h1&gt;
+&lt;/div&gt;
+</code></pre>
+<p>样式部分</p>
+<pre><code class="css">.container,h1{
+    background:url(&quot;https://gd4ark.github.io/CSS-Carousel/image/2.jpg&quot;);
+    background-size: 100% 100%;
+}
+.container h1,
+.container::after{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.container{
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+.container::after{
+    content: &#39;&#39;;
+    background: rgba(0,0,0,0.8);
+}
+h1{
+    z-index: 2;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+}
+</code></pre>
+<p>在线查看，可以修改文字哦： <a href="https://gd4ark.github.io/blog_demos/2018-11-26/02.html" target="_blank" rel="noopener">链接</a></p>
+<p>完整代码：<a href="https://github.com/gd4Ark/blog_demos/blob/master/2018-11-26/02.html" target="_blank" rel="noopener">链接</a></p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>没错，这个困扰我多年的效果就是这么简单，果然还是懂得少，哪知道张鑫旭大神早在<code>2011</code>年就给出了答案。</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <span>本文作者：</span>4Ark
+        </li>
+        <li class="post-copyright-link">
+          <span>本文链接：</span>
+          <a href="https://4ark.me//post/105732a8.html" title="CSS题目系列（4） - 文字穿透遮罩层">https://4ark.me/post/105732a8.html</a>
+        </li>
+        <li class="post-copyright-license">
+          <span>版权： </span>
+          本站文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/前端/">前端</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/post/5330f5ce.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">一个前端在校生的2018年终总结</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/post/bdd845bb.html">
+        <span class="next-text nav-default">CSS题目系列（3）- 实现文字切割效果</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+      
+        
+
+
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+
+    <div id="gitalk-container"></div>
+
+    <script>
+        var gitalk = new Gitalk({
+            clientID: 'ca4ae20760cf27ad5c6c',
+            clientSecret: '671788fb8d6aed08906b70340a8ba3088ec03f39',
+            repo: 'gd4Ark.github.io',
+            owner: 'gd4Ark',
+            admin: 'gd4Ark',
+            id: location.pathname,      // Ensure uniqueness and length less than 50
+            distractionFreeMode: 'false'  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+
+
+      
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2018 -
+    
+    2019
+    <span class="footer-author">4Ark.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+<!--prettify代码高亮脚本引入-->
+
+    <script src="/plugins/prettify/prettify.js"></script>
+    <script type="text/javascript">
+    jQuery(function($){
+        $('pre').addClass('prettyprint');
+        prettyPrint();
+    });
+    </script>
+
+
+  </body>
+</html>

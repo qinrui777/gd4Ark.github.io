@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc">
+<meta name="baidu-site-verification" content="hkLiBHH93D">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="CSS题目系列（2） - 实现一个固定比例盒子">
+
+
+
+
+  <meta name="keywords" content="前端,">
+
+
+
+
+  <link rel="alternate" href="/default" title="4Ark' Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://4ark.me/post/c6e0afe2.html">
+
+
+<meta name="keywords" content="前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS题目系列（2） - 实现一个固定比例盒子">
+<meta property="og:url" content="https://4ark.me/post/c6e0afe2.html">
+<meta property="og:site_name" content="4Ark&#39; Blog">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006mS5wEgy1fxl6othpvtg31af0pxgtv.gif">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006mS5wEgy1fxl6othpvtg31af0pxgtv.gif">
+<meta property="og:updated_time" content="2019-03-11T11:38:32.700Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSS题目系列（2） - 实现一个固定比例盒子">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006mS5wEgy1fxl6othpvtg31af0pxgtv.gif">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+  <link href="/plugins/prettify/prettify.css" rel="stylesheet">
+
+
+<!--百度统计-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b733e1eaeacbf8f87d3be047f28c3973";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+    <title> CSS题目系列（2） - 实现一个固定比例盒子 - 4Ark' Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">4Ark' Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          CSS题目系列（2） - 实现一个固定比例盒子
+        
+      </h1>
+
+      <time class="post-time">
+          2018-11-26
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p><div class="excerpt"><br>    <img src="https://ws1.sinaimg.cn/large/006mS5wEgy1fxl6othpvtg31af0pxgtv.gif"><br></div><br><a id="more"></a></p>
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>在开发过程中，会有这么一个情况，需要将一个盒子的尺寸定义为固定比例，且尺寸需根据视图的尺寸来进行缩放，也就是响应式，常见的多如有矩形、圆形等。</p>
+<p>下面我将使用下面的例子为大家进行讲解：</p>
+<p><img src="https://ws1.sinaimg.cn/large/006mS5wEgy1fxl6othpvtg31af0pxgtv.gif" alt></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>其实实现这个效果，有多种方法，下面逐一介绍。</p>
+<h3 id="1、垂直方向的padding"><a href="#1、垂直方向的padding" class="headerlink" title="1、垂直方向的padding"></a>1、垂直方向的padding</h3><p>相信大家对<code>padding</code>都不陌生，但你知道他是如何取值的吗？</p>
+<p>看一下<a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/padding" target="_blank" rel="noopener">MDN</a>中对<code>padding</code>给出的解释：</p>
+<blockquote>
+<h3 id="取值"><a href="#取值" class="headerlink" title="取值"></a>取值</h3><p>指定一个，两个，三个或四个下列的值：</p>
+<ul>
+<li><p><code>&lt;长度&gt;</code></p>
+<p>可指定非负的固定宽度. See <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/length" target="_blank" rel="noopener"><code>&lt;length&gt;</code></a> for details</p>
+</li>
+<li><p><code>&lt;百分比&gt;</code></p>
+<p>相对于包含块的宽度</p>
+</li>
+<li><p><strong>指定一个值时 该值指定四个边的内边距</strong></p>
+</li>
+<li><strong>指定两个值时 第一个值指定上下两边的内边距 第二个指定左右两边的内边距</strong></li>
+<li><strong>指定三个值时 第一个指定上边的内边距</strong> <strong>.第二个指定左右两边 第三个指定下边</strong></li>
+<li><strong>指定四个值时分别为上 右 下 左（顺时针顺序）</strong></li>
+</ul>
+</blockquote>
+<p>也就是说，<strong>给<code>padding</code>的值设定为百分比时，将根据父容器的宽度来计算。</strong></p>
+<p>现在假设我们有一个<code>div</code>，我们希望它的尺寸能根据<code>body</code>（它的父容器）的宽度来实现固定比例：</p>
+<pre><code class="html">&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p>样式部分</p>
+<pre><code class="css">.box{
+    width:50%;
+    padding-bottom:50%;
+}
+</code></pre>
+<blockquote>
+<p>其实这里的<code>padding-bottom</code>换成<code>padding-top</code>也一样可以实现。</p>
+</blockquote>
+<p>没错，就这么简单，我们已经实现了文章开头所展示的效果。</p>
+<p>但是我们使用这种方法的时候需要注意几点：</p>
+<ol>
+<li>不需要设定<code>height</code>，最好就是手动设定为<code>0</code>。</li>
+<li>子元素需要设定为绝对定位（父容器为相对定位），否则子元素将被<code>padding</code>挤出去。</li>
+</ol>
+<h4 id="其它比例"><a href="#其它比例" class="headerlink" title="其它比例"></a>其它比例</h4><p>前面实现的是一个正方形比例的，那如果我想要是<code>16:9</code>的呢？</p>
+<p>那我们将根据一个公式：<code>width * x / y</code>计算，如下：</p>
+<pre><code class="css">.box{
+    width:50%;
+    padding-bottom: calc( 50% * 9 / 16 );
+    /* 或者 */
+    padding-bottom : 28.125%;
+}
+</code></pre>
+<h3 id="2、视窗单位"><a href="#2、视窗单位" class="headerlink" title="2、视窗单位"></a>2、视窗单位</h3><blockquote>
+<p>视窗是你的浏览器实际显示内容的区域——换句话说是你的不包括工具栏和按钮的网页浏览器。这些单位是<code>vw</code>,<code>vh</code>,<code>vmin</code>和<code>vmax</code>。它们都代表了浏览器（视窗）尺寸的比例和窗口大小调整产生的规模改变。</p>
+</blockquote>
+<p>也就是说，<strong>网页的宽度是<code>100vw</code>，取一半就是<code>50vw</code>，无论怎么缩放都是一半，而且这个一半不止可以用在<code>width</code>上。</strong></p>
+<p>所以：</p>
+<pre><code class="html">&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+</code></pre>
+<pre><code class="css">.box{
+    width:50vw;
+    height:50vw;
+}
+</code></pre>
+<p>一个正方形就出来了，简单吗？？？</p>
+<h4 id="其它比例-1"><a href="#其它比例-1" class="headerlink" title="其它比例"></a>其它比例</h4><p>跟上面一样，通过公式可以得到：</p>
+<pre><code class="css">.box{
+    width:50vw;
+    padding-bottom: calc( 50vw * 9 / 16 );
+    /* 或者 */
+    padding-bottom : 28.125vw;
+}
+</code></pre>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a href="https://www.w3cplus.com/css/aspect-ratio.html" target="_blank" rel="noopener">https://www.w3cplus.com/css/aspect-ratio.html</a></li>
+<li><a href="https://www.zhangxinxu.com/wordpress/2012/09/new-viewport-relative-units-vw-vh-vm-vmin/" target="_blank" rel="noopener">https://www.zhangxinxu.com/wordpress/2012/09/new-viewport-relative-units-vw-vh-vm-vmin/</a></li>
+<li><a href="https://blog.csdn.net/qq_36367494/article/details/79266037" target="_blank" rel="noopener">https://blog.csdn.net/qq_36367494/article/details/79266037</a></li>
+</ul>
+<h2 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h2><p>通过以上两种方法，以后实现固定比例的盒子是不是变得简单起来了？</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <span>本文作者：</span>4Ark
+        </li>
+        <li class="post-copyright-link">
+          <span>本文链接：</span>
+          <a href="https://4ark.me//post/c6e0afe2.html" title="CSS题目系列（2） - 实现一个固定比例盒子">https://4ark.me/post/c6e0afe2.html</a>
+        </li>
+        <li class="post-copyright-license">
+          <span>版权： </span>
+          本站文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/前端/">前端</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/post/bdd845bb.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">CSS题目系列（3）- 实现文字切割效果</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/post/abb77fd2.html">
+        <span class="next-text nav-default">CSS题目系列（1） - 可滚动的Table</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+      
+        
+
+
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+
+    <div id="gitalk-container"></div>
+
+    <script>
+        var gitalk = new Gitalk({
+            clientID: 'ca4ae20760cf27ad5c6c',
+            clientSecret: '671788fb8d6aed08906b70340a8ba3088ec03f39',
+            repo: 'gd4Ark.github.io',
+            owner: 'gd4Ark',
+            admin: 'gd4Ark',
+            id: location.pathname,      // Ensure uniqueness and length less than 50
+            distractionFreeMode: 'false'  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+
+
+      
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2018 -
+    
+    2019
+    <span class="footer-author">4Ark.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+<!--prettify代码高亮脚本引入-->
+
+    <script src="/plugins/prettify/prettify.js"></script>
+    <script type="text/javascript">
+    jQuery(function($){
+        $('pre').addClass('prettyprint');
+        prettyPrint();
+    });
+    </script>
+
+
+  </body>
+</html>

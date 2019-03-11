@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc">
+<meta name="baidu-site-verification" content="hkLiBHH93D">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="锐捷无线AP学习笔记 - 入门篇">
+
+
+
+
+  <meta name="keywords" content="网络,">
+
+
+
+
+  <link rel="alternate" href="/default" title="4Ark' Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://4ark.me/post/d69467be.html">
+
+
+<meta name="description" content="前言版本说明我的AP型号为： RG-AP220-SE 系统版本为： RGOS 11.1(5)B8  需求本次实训目的是创建一个热点，需求如下：  创建一个 SSID 为 ruijie 的WLAN 能够自动获取IP地址（DHCP） 为 WLAN 添加一种加密方式  正文准备首先，我们要先把AP切换到胖模式 Ruijie# ap-mode fat  可以用以下命令查看AP当前的模式 Ruijie# s">
+<meta name="keywords" content="网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="锐捷无线AP学习笔记 - 入门篇">
+<meta property="og:url" content="https://4ark.me/post/d69467be.html">
+<meta property="og:site_name" content="4Ark&#39; Blog">
+<meta property="og:description" content="前言版本说明我的AP型号为： RG-AP220-SE 系统版本为： RGOS 11.1(5)B8  需求本次实训目的是创建一个热点，需求如下：  创建一个 SSID 为 ruijie 的WLAN 能够自动获取IP地址（DHCP） 为 WLAN 添加一种加密方式  正文准备首先，我们要先把AP切换到胖模式 Ruijie# ap-mode fat  可以用以下命令查看AP当前的模式 Ruijie# s">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-03-11T11:38:32.707Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="锐捷无线AP学习笔记 - 入门篇">
+<meta name="twitter:description" content="前言版本说明我的AP型号为： RG-AP220-SE 系统版本为： RGOS 11.1(5)B8  需求本次实训目的是创建一个热点，需求如下：  创建一个 SSID 为 ruijie 的WLAN 能够自动获取IP地址（DHCP） 为 WLAN 添加一种加密方式  正文准备首先，我们要先把AP切换到胖模式 Ruijie# ap-mode fat  可以用以下命令查看AP当前的模式 Ruijie# s">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+  <link href="/plugins/prettify/prettify.css" rel="stylesheet">
+
+
+<!--百度统计-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b733e1eaeacbf8f87d3be047f28c3973";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+    <title> 锐捷无线AP学习笔记 - 入门篇 - 4Ark' Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">4Ark' Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          锐捷无线AP学习笔记 - 入门篇
+        
+      </h1>
+
+      <time class="post-time">
+          2018-11-05
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h3 id="版本说明"><a href="#版本说明" class="headerlink" title="版本说明"></a>版本说明</h3><p>我的AP型号为： RG-AP220-SE</p>
+<p>系统版本为： RGOS 11.1(5)B8 </p>
+<h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>本次实训目的是创建一个热点，需求如下：</p>
+<ul>
+<li>创建一个 SSID 为 <code>ruijie</code> 的WLAN</li>
+<li>能够自动获取IP地址（DHCP）</li>
+<li>为 WLAN 添加一种加密方式</li>
+</ul>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>首先，我们要先把AP切换到胖模式</p>
+<pre><code class="shell">Ruijie# ap-mode fat
+</code></pre>
+<p>可以用以下命令查看AP当前的模式</p>
+<pre><code class="shell">Ruijie# show ap-mode
+</code></pre>
+<p>接着开启一下无线广播转发</p>
+<pre><code class="shell">Ruijie(config)# data-plane wireless-broadcast enable
+</code></pre>
+<p>好了，现在就可以开始我们的实例了。</p>
+<h3 id="创建-WLAN"><a href="#创建-WLAN" class="headerlink" title="创建 WLAN"></a>创建 WLAN</h3><p>创建一个 VLAN</p>
+<pre><code class="shell">Ruijie(config)# vlan 1
+Ruijie(config-vlan)# ex
+</code></pre>
+<p>以太网接口封装 VLAN</p>
+<pre><code class="shell">Ruijie(config)# int gigabitEthernet 0/1
+Ruijie(config-if-GigabitEthernet 0/1)# encapsulation dot1Q 1 // 对应 vlan
+Ruijie(config-if-GigabitEthernet 0/1)# ex
+</code></pre>
+<p>设置一下AP的管理地址（管理地址与网关处于相同网段下）</p>
+<pre><code class="shell">Ruijie(config)# int bVI 1
+Ruijie(config-if-BVI 1)# ip address 10.10.34.250 255.255.255.0
+Ruijie(config-if-BVI 1)# ex
+</code></pre>
+<blockquote>
+<p>注：此时，在你本机上 ping 这个地址，是可以通的（若不能 ping 通，且配置正确，请看文章结尾）。</p>
+</blockquote>
+<p>定义 SSID</p>
+<pre><code class="shell">Ruijie(config)# dot11 wlan 1
+Ruijie(dot11-wlan-config)# vlan 1
+Ruijie(dot11-wlan-config)# broadcast-ssid
+Ruijie(dot11-wlan-config)# ssid ruijie
+Ruijie(dot11-wlan-config)# ex
+</code></pre>
+<p>创建射频卡子接口</p>
+<pre><code class="shell">Ruijie(config)# int dot11radio 1/0.1
+Ruijie(config-subif-Dot11radio 1/0.1)# encapsulation dot1Q 1 // 对应 vlan
+Ruijie(config-subif-Dot11radio 1/0.1)# ex
+</code></pre>
+<p>SSID 和 射频卡进行关联</p>
+<pre><code class="shell">Ruijie(config)# int dot11radio 1/0
+Ruijie(config-if-Dot11radio 1/0)# wlan-id 1 // 对应 wlan-id
+Ruijie(config-if-Dot11radio 1/0)# ex
+</code></pre>
+<blockquote>
+<p>注： 这时 AP 已经发出了无线信号，你可以在手机上搜索得到。</p>
+</blockquote>
+<p>设置 AP 的默认路由（也就是这个局域网的网关）</p>
+<pre><code class="shell">Ruijie(config)# ip route 0.0.0.0 0.0.0.0 10.10.34.254
+</code></pre>
+<blockquote>
+<p>注：做这一步之前，最好确认一下 AP 是否与默认路由相通</p>
+</blockquote>
+<p>这时，通过手动配置静态 IP，是可以成功连接 WLAN 的。</p>
+<h3 id="DHCP服务"><a href="#DHCP服务" class="headerlink" title="DHCP服务"></a>DHCP服务</h3><p>通常来说，一个网络环境下会有专门的 DHCP 服务器，所以不需要 AP 来分配地址。</p>
+<p>然而，我这里并没有 DHCP 服务器，那就只能靠 AP 来分配了。</p>
+<p>首先，开启 DHCP 服务</p>
+<pre><code class="shell">Ruijie(config)# service dhcp
+</code></pre>
+<p>排除地址，low - high</p>
+<pre><code class="shell">Ruijie(config)# ip dhcp excluded-address 10.10.34.8 10.10.34.254
+</code></pre>
+<blockquote>
+<p>注：我把 8 - 254 的 IP 排除了，所以剩下的范围就是 1 - 7。 </p>
+</blockquote>
+<p>配置地址池，名字为 test，以及地址段、网关、DNS</p>
+<pre><code class="shell">Ruijie(config)# ip dhcp pool test
+Ruijie(dhcp-config)# network 10.10.34.0 255.255.255.0
+Ruijie(dhcp-config)# default-router 10.10.34.254
+Ruijie(dhcp-config)# dns-server 8.8.8.8
+</code></pre>
+<p>这时，手机上是可以通过 DHCP方式 获取到 IP 地址的。</p>
+<h2 id="WLAN-加密"><a href="#WLAN-加密" class="headerlink" title="WLAN 加密"></a>WLAN 加密</h2><p>常见的 WLAN 加密方式分为三种：</p>
+<ul>
+<li>WEP 加密</li>
+<li>PSK 接入认证</li>
+<li>802.1x 接入认证</li>
+</ul>
+<p>关于加密方式详细的介绍，请看：<a href="http://www.ruijiery.com/uploadfile/2016/0621/20160621124933455.pdf" target="_blank" rel="noopener">手册 WLAN 安全节章</a> 。</p>
+<p>配置加密方式都需要进入到相关的 wlan-id 下</p>
+<pre><code class="shell">Ruijie(config)# wlansec 1 // 对应 wlan-id
+</code></pre>
+<h3 id="WEP-方式"><a href="#WEP-方式" class="headerlink" title="WEP 方式"></a>WEP 方式</h3><pre><code class="shell">Ruijie(config-wlansec)# security static-wep-key encryption 40 ascii 1 12345
+Ruijie(config-wlansec)# security static-wep-key authentication  shellare-key
+</code></pre>
+<blockquote>
+<p>注： 密码长度可选为 （40 | 103），40 = 5个，103 = 13个 </p>
+</blockquote>
+<h3 id="PSK-接入认证-WPA"><a href="#PSK-接入认证-WPA" class="headerlink" title="PSK 接入认证 (WPA)"></a>PSK 接入认证 (WPA)</h3><pre><code class="shell">Ruijie(config-wlansec)# security wpa enable
+Ruijie(config-wlansec)# security wpa ciphers aes enable
+Ruijie(config-wlansec)# security wpa akm psk enable
+Ruijie(config-wlansec)# security wpa akm psk set-key ascii 123456789
+</code></pre>
+<blockquote>
+<p>注：密码不得少于 8 个 字符</p>
+</blockquote>
+<h3 id="PSK-接入认证-WPA2"><a href="#PSK-接入认证-WPA2" class="headerlink" title="PSK 接入认证 (WPA2)"></a>PSK 接入认证 (WPA2)</h3><pre><code class="shell">Ruijie(config-wlansec)# security rsn enable
+Ruijie(config-wlansec)# security rsn ciphers aes enable
+Ruijie(config-wlansec)# security rsn akm psk enable
+Ruijie(config-wlansec)# security rsn akm psk set-key ascii 123456789
+</code></pre>
+<blockquote>
+<p>注：密码不得少于 8 个 字符</p>
+</blockquote>
+<h3 id="802-1x-接入认证"><a href="#802-1x-接入认证" class="headerlink" title="802.1x 接入认证"></a><strong>802.1x</strong> 接入认证</h3><pre><code class="shell">Ruijie(config-wlansec)#security wpa enable
+Ruijie(config-wlansec)#security wpa ciphers aes enable
+</code></pre>
+<h2 id="说一下遇到的问题"><a href="#说一下遇到的问题" class="headerlink" title="说一下遇到的问题"></a>说一下遇到的问题</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在这次实训中，我用到 vlan 1，一切正常。</p>
+<p>但是，当我使用另外的 vlan （vlan 10）时，发现在本机并不能 ping 通 AP 的管理地址。</p>
+<p>这个时候，AP 不能与网关连通，所以无法正确配置 DHCP 服务器（手动配置静态没有问题）。</p>
+<h3 id="看法"><a href="#看法" class="headerlink" title="看法"></a>看法</h3><p>初步看来，可能是因为我机房的二层交换机的所有接口都在 vlan 1下，且没有配置为 trunk 模式，故不能 ping 通。</p>
+<p>但是我不知道这个交换机的密码，所以无法取证。</p>
+<p>如果你也遇到这个问题，且有靠谱的解决方案，请联系我，谢谢。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><p><a href="http://www.ruijiery.com/uploadfile/2016/0621/20160621124933455.pdf" target="_blank" rel="noopener">http://www.ruijiery.com/uploadfile/2016/0621/20160621124933455.pdf</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/u012318074/article/details/52599540" target="_blank" rel="noopener">https://blog.csdn.net/u012318074/article/details/52599540</a></p>
+</li>
+<li><p><a href="https://wenku.baidu.com/view/ab3addf8af1ffc4ffe47ac93.html" target="_blank" rel="noopener">https://wenku.baidu.com/view/ab3addf8af1ffc4ffe47ac93.html</a></p>
+</li>
+<li><p><a href="https://wenku.baidu.com/view/fcc1dda9d0d233d4b14e6973.html" target="_blank" rel="noopener">https://wenku.baidu.com/view/fcc1dda9d0d233d4b14e6973.html</a></p>
+</li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <span>本文作者：</span>4Ark
+        </li>
+        <li class="post-copyright-link">
+          <span>本文链接：</span>
+          <a href="https://4ark.me//post/d69467be.html" title="锐捷无线AP学习笔记 - 入门篇">https://4ark.me/post/d69467be.html</a>
+        </li>
+        <li class="post-copyright-license">
+          <span>版权： </span>
+          本站文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/网络/">网络</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/post/28baf5fd.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">解决 Windows 中设置静态 IP 却始终变回 DHCP 获取问题</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+      
+        
+
+
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+
+    <div id="gitalk-container"></div>
+
+    <script>
+        var gitalk = new Gitalk({
+            clientID: 'ca4ae20760cf27ad5c6c',
+            clientSecret: '671788fb8d6aed08906b70340a8ba3088ec03f39',
+            repo: 'gd4Ark.github.io',
+            owner: 'gd4Ark',
+            admin: 'gd4Ark',
+            id: location.pathname,      // Ensure uniqueness and length less than 50
+            distractionFreeMode: 'false'  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+
+
+      
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2018 -
+    
+    2019
+    <span class="footer-author">4Ark.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+<!--prettify代码高亮脚本引入-->
+
+    <script src="/plugins/prettify/prettify.js"></script>
+    <script type="text/javascript">
+    jQuery(function($){
+        $('pre').addClass('prettyprint');
+        prettyPrint();
+    });
+    </script>
+
+
+  </body>
+</html>

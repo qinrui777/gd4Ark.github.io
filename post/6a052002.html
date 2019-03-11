@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc">
+<meta name="baidu-site-verification" content="hkLiBHH93D">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="理解 JavaScript 中的原型">
+
+
+
+
+  <meta name="keywords" content="前端,">
+
+
+
+
+  <link rel="alternate" href="/default" title="4Ark' Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://4ark.me/post/6a052002.html">
+
+
+<meta name="description" content="JavaScript 中的原型一直是我很惧怕的一个主题，理由很简单，因为真的不好理解，但它确实是 JavaScript 中很重要的一部分，而且是面试的必考题，就算现在不懂，以后迟早有一天要把它弄懂，不然的话永远都没办法把自己的技术能力往上提高一个层次，所以今天就来讲讲 JavaScript 中的原型。">
+<meta name="keywords" content="前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解 JavaScript 中的原型">
+<meta property="og:url" content="https://4ark.me/post/6a052002.html">
+<meta property="og:site_name" content="4Ark&#39; Blog">
+<meta property="og:description" content="JavaScript 中的原型一直是我很惧怕的一个主题，理由很简单，因为真的不好理解，但它确实是 JavaScript 中很重要的一部分，而且是面试的必考题，就算现在不懂，以后迟早有一天要把它弄懂，不然的话永远都没办法把自己的技术能力往上提高一个层次，所以今天就来讲讲 JavaScript 中的原型。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-03-11T11:38:32.706Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解 JavaScript 中的原型">
+<meta name="twitter:description" content="JavaScript 中的原型一直是我很惧怕的一个主题，理由很简单，因为真的不好理解，但它确实是 JavaScript 中很重要的一部分，而且是面试的必考题，就算现在不懂，以后迟早有一天要把它弄懂，不然的话永远都没办法把自己的技术能力往上提高一个层次，所以今天就来讲讲 JavaScript 中的原型。">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+  <link href="/plugins/prettify/prettify.css" rel="stylesheet">
+
+
+<!--百度统计-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b733e1eaeacbf8f87d3be047f28c3973";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+    <title> 理解 JavaScript 中的原型 - 4Ark' Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">4Ark' Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          理解 JavaScript 中的原型
+        
+      </h1>
+
+      <time class="post-time">
+          2019-01-20
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p><div class="excerpt"><br>    JavaScript 中的原型一直是我很惧怕的一个主题，理由很简单，因为真的不好理解，但它确实是 JavaScript 中很重要的一部分，而且是面试的必考题，就算现在不懂，以后迟早有一天要把它弄懂，不然的话永远都没办法把自己的技术能力往上提高一个层次，所以今天就来讲讲 JavaScript 中的原型。<br></div><br><a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>JavaScript 中的原型一直是我很惧怕的一个主题，理由很简单，因为真的不好理解，但它确实是 JavaScript 中很重要的一部分，而且是面试的必考题，就算现在不懂，以后迟早有一天要把它弄懂，不然的话永远都没办法把自己的技术能力往上提高一个层次，所以今天就来讲讲 JavaScript 中的原型。</p>
+<p>本文是这系列的第四篇，往期文章：</p>
+<ol>
+<li><a href="https://juejin.im/post/5c386bd96fb9a04a03796f93" target="_blank" rel="noopener">理解 JavaScript 中的作用域</a></li>
+<li><a href="https://juejin.im/post/5c3893bc6fb9a049d37f530f" target="_blank" rel="noopener">理解 JavaScript 中的闭包</a></li>
+<li><a href="https://gd4ark.github.io/2019/01/16/%E7%90%86%E8%A7%A3%20JavaScript%20%E4%B8%AD%E7%9A%84this/" target="_blank" rel="noopener">理解 JavaScript 中的 this</a></li>
+</ol>
+<h2 id="什么是原型"><a href="#什么是原型" class="headerlink" title="什么是原型"></a>什么是原型</h2><p>首先要说一下为什么会有原型这个东西，那是因为在 JavaScript 中并没有 “类” 的概念，它是靠原型和原型链实现对象属性的继承，即便在 ES6 中新出了<code>class</code>的语法，但那也只是一个语法糖，它的底层依然是原型。</p>
+<p>要理解原型（原型链），最重要的是理解两个属性以及它们之间的关系：</p>
+<ul>
+<li><code>__proto__</code></li>
+<li><code>prototype</code></li>
+</ul>
+<h3 id="proto"><a href="#proto" class="headerlink" title="__proto__"></a><code>__proto__</code></h3><p>JavaScript中，万物皆对象，所有的对象都有<code>__proto__</code>属性（<code>null</code>和<code>undefined</code>除外），而且指向创造这个对象的函数对象的<code>prototype</code>属性。</p>
+<pre><code class="javascript">var obj = {};
+console.log( obj.__proto__ === Object.prototype ); // true
+var arr = [];
+console.log( arr.__proto__ === Array.prototype ); // true
+var fn = function(){};
+console.log( fn.__proto__ === Function.prototype ); // true
+var str = &quot;&quot;;
+console.log( str.__proto__ === String.prototype ); // true
+var num = 1;
+console.log( num.__proto__ === Number.prototype ); // true
+</code></pre>
+<p>前面说了，在 JavaScript 中，一切皆对象（可以理解为它们都是从对象那里继承过来的），所以：</p>
+<pre><code class="javascript">console.log( Function.prototype.__proto__ === Object.prototype ); // true
+console.log( Array.prototype.__proto__ === Object.prototype ); // true
+console.log( String.prototype.__proto__ === Object.prototype ); // true
+</code></pre>
+<p>而因为<code>Object.prototype</code>的<code>__proto__</code>已经是终点了，所以它的指向是：</p>
+<pre><code class="javascript">console.log( Object.prototype.__proto__ === null ); // true
+</code></pre>
+<p><strong>注意</strong>，虽然大多数浏览器都支持通过<code>__proto__</code>来访问，但它并不是<code>ECMAScript</code>的标准，在 ES5 中可以通过<code>Object.getPrototypeOf()</code>来获取这个属性。</p>
+<pre><code class="javascript">var obj = {};
+console.log( Object.getPrototypeOf(obj) === Object.prototype ); // true
+</code></pre>
+<h3 id="prototype"><a href="#prototype" class="headerlink" title="prototype"></a><code>prototype</code></h3><p> <code>prototype</code>是每个函数对象都具有的属性（它也有<code>__proto__</code>，因为函数也是对象），实例化创建出来的对象会共享此<code>prototype</code>里的属性和方法（通过<code>__proto__</code>）。</p>
+<p>在上面的例子中已经看到过<code>prototype</code>的身影，下面通过一个例子来讲述它的作用。</p>
+<p>现在我们有一个构造函数<code>Person</code>，并且对它进行实例化：</p>
+<pre><code class="javascript">function Person(name){
+    this.name = name;
+    this.sayName = function(){
+        console.log(&quot;我的名字是：&quot; + this.name);
+    }
+}
+
+var a = new Person(&quot;小明&quot;);
+var b = new Person(&quot;小红&quot;);
+
+a.sayName(); // 我的名字是：小明
+b.sayName(); // 我的名字是：小红
+</code></pre>
+<h4 id="new运算符的缺点"><a href="#new运算符的缺点" class="headerlink" title="new运算符的缺点"></a>new运算符的缺点</h4><p>但是，用构造函数生成实例对象，有一个缺点，那就是无法共享属性和方法。</p>
+<p>例如上面例子中的<code>a</code>和<code>b</code>，它们都有<code>sayName</code>方法，虽然做的事相同，但它们却是独立的，这就会造成极大的资源浪费，因为每一个实例对象，都有自己的属性和方法的副本。</p>
+<h4 id="prototype属性的引入"><a href="#prototype属性的引入" class="headerlink" title="prototype属性的引入"></a>prototype属性的引入</h4><p>考虑到这一点，Brendan Eich 决定为构造函数设置一个<code>prototype</code>属性。</p>
+<p>这个属性包含一个对象，所有实例对象需要共享的属性和方法，都放在这个对象里面，而不需要共享属性和方法，就放在构造函数里面，这个对象就是<code>prototype</code>对象。</p>
+<p>实例对象一旦创建，将自动引用<code>prototype</code>对象的属性和方法。也就是说，实例对象的属性和方法，分成两种，一种是本地的，另一种是引用的。</p>
+<p>现在对上面的例子进行改写：</p>
+<pre><code class="javascript">function Person(name){
+    this.name = name;
+}
+Person.prototype = {
+    sayName : function(){
+        console.log(&quot;我的名字是：&quot; + this.name);
+    }
+}
+
+var a = new Person(&quot;小明&quot;);
+var b = new Person(&quot;小红&quot;);
+a.sayName() // 我的名字是：小明
+b.sayName() // 我的名字是：小红
+</code></pre>
+<p>现在无论<code>Person</code>被实例化多少次，它的实例对象都共享同一个<code>sayName</code>方法，这就是<code>prototype</code>最大的用处。</p>
+<h2 id="原型链"><a href="#原型链" class="headerlink" title="原型链"></a>原型链</h2><p>讲原型一个不可避免的概念就是原型链，原型链是通过<code>__proto__</code>来实现的。</p>
+<p>现在我们以<code>Person</code>的例子来讲整个原型链。</p>
+<pre><code class="javascript">var a = new Person(&quot;小明&quot;);
+
+// 实例化对象的 __proto__ 指针指向构造函数的原型
+console.log( a.__proto__ === Person.prototype )
+// 构造函数的原型是一个对象，它的 __proto__ 指向对象的原型
+console.log( Person.prototype.__proto__ === Object.prototype )
+// 函数也是一个对象，它的 __proto__ 指向 函数的原型
+console.log( Person.__proto__ === Function.prototype )
+// 函数的原型是一个对象，它的 __proto__ 指向对象的原型
+console.log( Function.prototype.__proto__ === Object.prototype )
+// 对象的原型的__proto__ 指向 null
+console.log( Object.prototype.__proto__ === null )
+</code></pre>
+<p>以上就是<code>a</code>对象的整个原型链。</p>
+<h2 id="属性查找机制"><a href="#属性查找机制" class="headerlink" title="属性查找机制"></a>属性查找机制</h2><p>当访问一个对象的属性时，Javascript  会从对象本身开始往上遍历整个原型链，直到找到对应属性为止。如果此时到达了原型链的顶部，也就是上例中的 <code>Object.prototype</code>，仍然未发现需要查找的属性，那么 Javascript 就会返回 <code>undefined</code>值。</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <span>本文作者：</span>4Ark
+        </li>
+        <li class="post-copyright-link">
+          <span>本文链接：</span>
+          <a href="https://4ark.me//post/6a052002.html" title="理解 JavaScript 中的原型">https://4ark.me/post/6a052002.html</a>
+        </li>
+        <li class="post-copyright-license">
+          <span>版权： </span>
+          本站文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/前端/">前端</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/post/834cec76.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">解决 Laravel JWT 多表认证时获取不到当前认证用户的问题</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/post/618b271f.html">
+        <span class="next-text nav-default">Lumen 使用 throttle 限制接口访问频率</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+      
+        
+
+
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+
+    <div id="gitalk-container"></div>
+
+    <script>
+        var gitalk = new Gitalk({
+            clientID: 'ca4ae20760cf27ad5c6c',
+            clientSecret: '671788fb8d6aed08906b70340a8ba3088ec03f39',
+            repo: 'gd4Ark.github.io',
+            owner: 'gd4Ark',
+            admin: 'gd4Ark',
+            id: location.pathname,      // Ensure uniqueness and length less than 50
+            distractionFreeMode: 'false'  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+
+
+      
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2018 -
+    
+    2019
+    <span class="footer-author">4Ark.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+<!--prettify代码高亮脚本引入-->
+
+    <script src="/plugins/prettify/prettify.js"></script>
+    <script type="text/javascript">
+    jQuery(function($){
+        $('pre').addClass('prettyprint');
+        prettyPrint();
+    });
+    </script>
+
+
+  </body>
+</html>

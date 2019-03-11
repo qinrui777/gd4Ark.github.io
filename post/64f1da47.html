@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc">
+<meta name="baidu-site-verification" content="hkLiBHH93D">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Vue + Element UI + Lumen 实现通用表格功能 - 分页">
+
+
+
+
+  <meta name="keywords" content="前端,后端,">
+
+
+
+
+  <link rel="alternate" href="/default" title="4Ark' Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://4ark.me/post/64f1da47.html">
+
+
+<meta name="description" content="最近在做一个前后端分离的项目，前端使用 Vue+ Element UI，而后端则使用 Lumen 做接口开发，其中分页是必不可少的一部分，本文就介绍如何基于以上环境做一个简单、可复用的分页功能。">
+<meta name="keywords" content="前端,后端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue + Element UI + Lumen 实现通用表格功能 - 分页">
+<meta property="og:url" content="https://4ark.me/post/64f1da47.html">
+<meta property="og:site_name" content="4Ark&#39; Blog">
+<meta property="og:description" content="最近在做一个前后端分离的项目，前端使用 Vue+ Element UI，而后端则使用 Lumen 做接口开发，其中分页是必不可少的一部分，本文就介绍如何基于以上环境做一个简单、可复用的分页功能。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-03-11T11:38:32.702Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue + Element UI + Lumen 实现通用表格功能 - 分页">
+<meta name="twitter:description" content="最近在做一个前后端分离的项目，前端使用 Vue+ Element UI，而后端则使用 Lumen 做接口开发，其中分页是必不可少的一部分，本文就介绍如何基于以上环境做一个简单、可复用的分页功能。">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+  <link href="/plugins/prettify/prettify.css" rel="stylesheet">
+
+
+<!--百度统计-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b733e1eaeacbf8f87d3be047f28c3973";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+    <title> Vue + Element UI + Lumen 实现通用表格功能 - 分页 - 4Ark' Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">4Ark' Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Vue + Element UI + Lumen 实现通用表格功能 - 分页
+        
+      </h1>
+
+      <time class="post-time">
+          2019-02-01
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <div class="excerpt"><br>最近在做一个前后端分离的项目，前端使用 <code>Vue</code>+ <code>Element UI</code>，而后端则使用 <code>Lumen</code> 做接口开发，其中分页是必不可少的一部分，本文就介绍如何基于以上环境做一个简单、可复用的分页功能。<br></div>
+
+<a id="more"></a>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近在做一个前后端分离的项目，前端使用 <code>Vue</code>+ <code>Element UI</code>，而后端则使用 <code>Lumen</code> 做接口开发，其中分页是必不可少的一部分，本文就介绍如何基于以上环境做一个简单、可复用的分页功能。</p>
+<h2 id="先说后端"><a href="#先说后端" class="headerlink" title="先说后端"></a>先说后端</h2><p>后端做的事情不多，只需要接受几个参数，根据参数来获取数据即可。</p>
+<p>需要获取的参数如下：</p>
+<ul>
+<li><code>pageSize</code>（一页数据的数量）</li>
+<li><code>pageIndex</code>（第几页的数据）</li>
+</ul>
+<p>然后就可以根据这两个参数计算出偏移量，再从数据库中取出相应的数据。</p>
+<p>假如现在给出的参数为：<code>pageSize=10</code>，<code>pageIndex = 2</code>，也就是说每一页要10条记录，要第二页。</p>
+<p>计算偏移量的公式为：<code>pageSize * (pageIndex - 1)</code>。</p>
+<p>基本代码如下：</p>
+<pre><code class="php">public function getUser(Request $request){
+    $pageSize = $request-&gt;input(&#39;pageSize&#39;);
+    $pageIndex = $request-&gt;input(&#39;pageIndex&#39;);
+    $offset = $pageSize * ($pageIndex - 1);
+    return User::offset($offset)
+                -&gt;limit($pageSize)
+                -&gt;get();
+}
+</code></pre>
+<p>后端基本上只需要做这么多，就可以完成一个分页的功能了，但还是有几处地方需要改进一下：</p>
+<ul>
+<li>给参数一个默认值</li>
+<li>前端还需要知道整个表的数据的总数</li>
+<li>把分页做成一个公用的函数</li>
+</ul>
+<p>改进后的代码如下：</p>
+<pre><code class="php">private $default_page_size = 30;
+private $default_page_index = 1;
+
+// 公用分页
+public function pagination($request, $list) {
+    $pageSize = $request-&gt;input(&#39;pageSize&#39;, $this-&gt;default_page_size);
+    $pageIndex = $request-&gt;input(&#39;pageIndex&#39;, $this-&gt;default_page_index);
+    $offset = $pageSize * ($pageIndex - 1);
+    $total = $list-&gt;count();
+    $list = $list
+            -&gt;offset($offset)
+            -&gt;limit($pageSize);
+    return [
+        &#39;list&#39; =&gt; $list-&gt;get(),
+        &#39;total&#39; =&gt; $total,
+    ];
+}
+
+// 获取用户列表
+public function getUser(Request $request) {
+    $list = User::query();
+    /*
+        这里可以做一些查询之类的操作
+    */
+    return $this-&gt;pagination($request, $list);
+}
+</code></pre>
+<h2 id="再说前端"><a href="#再说前端" class="headerlink" title="再说前端"></a>再说前端</h2><p>前端相对于需要做的事情就比较多了，需要考虑几点：</p>
+<ul>
+<li>获取数据时需要带上分页的参数</li>
+<li>分页参数需要进行本地持久化，以免刷新页面回到第一页（后端设置的默认值）</li>
+<li>同样要抽象出一个通用的分页组件</li>
+</ul>
+<h3 id="获取数据"><a href="#获取数据" class="headerlink" title="获取数据"></a>获取数据</h3><p>这里我们用 <code>vuex</code>来管理状态，然后在请求时带上分页数据：</p>
+<p>store.js：</p>
+<blockquote>
+<p><strong>注意</strong>：</p>
+<ul>
+<li>这里为了方便展示代码，并没有使用模块化，项目中，最好将使用模块化方便管理。</li>
+<li>这里默认读者清楚 ES6 的语法</li>
+</ul>
+</blockquote>
+<pre><code class="javascript">export default new vuex.Store({
+    state : {
+        user : {
+            list: [],
+            total: 0,
+            pageIndex: 1,
+            pageSize: 10,
+        }
+    },
+    mutations: {
+        updateUser(state, data) {
+            state.user = {
+                ...state.user,
+                ...data,
+            }
+        },  
+    },
+    actions: {
+        async getUser({commit,state,getters}) {
+            // $axios 只是我自己封装的一个函数 这里并不重要
+            const res = await $axios.get(&#39;/user&#39;,getters.requestData(state.user))
+            commit(&#39;updateUser&#39;,res);
+        },
+    },
+    getters:{
+        requestData(state) {
+            return (origin) =&gt; {
+                const {
+                    pageIndex,
+                    pageSize,
+                } = origin;
+                const data = {
+                    pageIndex,
+                    pageSize,
+                };
+                return data;
+            }
+        },
+    }
+})
+</code></pre>
+<h3 id="数据持久化"><a href="#数据持久化" class="headerlink" title="数据持久化"></a>数据持久化</h3><p>现在如何获取数据已经搞定了，数据持久化我使用 <a href="https://github.com/crossjs/vuex-localstorage" target="_blank" rel="noopener">vuex-localstorage</a>，安装后，只需要在上面代码的基础上添加：</p>
+<pre><code class="javascript">import createPersist from &#39;vuex-localstorage&#39;
+export default new vuex.Store({
+    // 接着上面的
+    plugins: [createPersist({
+        namespace: &#39;studio-user&#39;,
+        initialState: {},
+        // ONE_WEEK
+        expires: 7 * 24 * 60 * 60 * 1e3
+    })]
+})
+</code></pre>
+<h3 id="公用分页组件"><a href="#公用分页组件" class="headerlink" title="公用分页组件"></a>公用分页组件</h3><pre><code class="html">&lt;template&gt;
+  &lt;el-Pagination
+    background
+    layout=&quot;total, sizes, prev, pager, next, jumper&quot;
+    :total=&quot;module.total&quot;
+    :current-page.sync=&quot;module.pageIndex&quot;
+    :page-sizes=&quot;module.pageSizes&quot;
+    :page-size.sync=&quot;module.pageSize&quot;
+    @current-change=&quot;handleCurrentChange&quot;
+    @size-change=&quot;handleSizeChange&quot;
+  &gt;
+  &lt;/el-Pagination&gt;
+&lt;/template&gt;
+&lt;script&gt;
+export default {
+  props: {
+    module: Object
+  },
+  methods: {
+    getData() {
+      this.$emit(&quot;get-data&quot;);
+    },
+    handleCurrentChange() {
+      this.getData();
+    },
+    handleSizeChange(val) {
+      this.getData();
+    }
+  }
+};
+&lt;/script&gt;
+</code></pre>
+<h3 id="使用分页组件"><a href="#使用分页组件" class="headerlink" title="使用分页组件"></a>使用分页组件</h3><pre><code class="html">&lt;template&gt;
+  &lt;div class=&quot;container&quot;&gt;
+    &lt;el-table
+        :data=&quot;user.list&quot;
+        style=&quot;width: 100%;&quot;
+      &gt;
+        &lt;el-table-column
+          v-for=&quot;(item,index) in columns&quot;
+          :key=&quot;index&quot;
+          :prop=&quot;item.prop&quot;
+          :label=&quot;item.label&quot;
+          align=&quot;center&quot;
+        /&gt;
+      &lt;/el-table&gt;
+      &lt;pagination
+        :module=&quot;user&quot;
+        @get-data=&quot;getData&quot;
+      /&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+&lt;script&gt;
+import Pagination from &quot;@/common/components/Pagination&quot;;
+import { mapActions, mapState } from &quot;vuex&quot;;
+export default {
+  components: {
+    Pagination,
+  },
+  data: () =&gt; ({
+    columns: [
+      {
+        prop: &quot;name&quot;,
+        label: &quot;姓名&quot;
+      },
+      {
+        prop: &quot;性别&quot;,
+        label: &quot;sex&quot;
+      },
+      {
+        prop: &quot;年龄&quot;,
+        label: &quot;age&quot;
+      },
+    ]
+  }),
+  created() {
+    this.getData();
+  },
+  methods: {
+      ...mapActions({
+          getData : &quot;getUser&quot;,
+      })   
+  },
+  computed: {
+    ...mapState([&quot;user&quot;])
+  }
+};
+&lt;/script&gt;
+</code></pre>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>将一些常用的功能抽象出来，打造一个自己的工具库，从而使开发效率更高。</p>
+<p>最后，贴上刚放假时立的 Flag：<a href="https://gd4ark.github.io/post/c2d2a6d1.html" target="_blank" rel="noopener">寒假待写文章</a>。</p>
+<p>最后的最后，安利一下文章开头说的项目：<a href="https://github.com/gd4Ark/learn_english" target="_blank" rel="noopener">清技背单词</a>，上面的代码就是从这个项目中<code>copy</code>出来后略作修改的。</p>
+<p>感谢观看，希望我的文章能对您有一些帮助！</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <span>本文作者：</span>4Ark
+        </li>
+        <li class="post-copyright-link">
+          <span>本文链接：</span>
+          <a href="https://4ark.me//post/64f1da47.html" title="Vue + Element UI + Lumen 实现通用表格功能 - 分页">https://4ark.me/post/64f1da47.html</a>
+        </li>
+        <li class="post-copyright-license">
+          <span>版权： </span>
+          本站文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/前端/">前端</a>
+		  
+			<a href="/tags/后端/">后端</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/post/a12c2740.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">分享一些好用的网站</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/post/834cec76.html">
+        <span class="next-text nav-default">解决 Laravel JWT 多表认证时获取不到当前认证用户的问题</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+      
+        
+
+
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+
+    <div id="gitalk-container"></div>
+
+    <script>
+        var gitalk = new Gitalk({
+            clientID: 'ca4ae20760cf27ad5c6c',
+            clientSecret: '671788fb8d6aed08906b70340a8ba3088ec03f39',
+            repo: 'gd4Ark.github.io',
+            owner: 'gd4Ark',
+            admin: 'gd4Ark',
+            id: location.pathname,      // Ensure uniqueness and length less than 50
+            distractionFreeMode: 'false'  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+
+
+      
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2018 -
+    
+    2019
+    <span class="footer-author">4Ark.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+<!--prettify代码高亮脚本引入-->
+
+    <script src="/plugins/prettify/prettify.js"></script>
+    <script type="text/javascript">
+    jQuery(function($){
+        $('pre').addClass('prettyprint');
+        prettyPrint();
+    });
+    </script>
+
+
+  </body>
+</html>

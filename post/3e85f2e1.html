@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc">
+<meta name="baidu-site-verification" content="hkLiBHH93D">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Laravel Eloquent 时间日期比较和分组">
+
+
+
+
+  <meta name="keywords" content="后端,">
+
+
+
+
+  <link rel="alternate" href="/default" title="4Ark' Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://4ark.me/post/3e85f2e1.html">
+
+
+<meta name="description" content="最近在做一个订单日收入模块的时候，涉及到日期比较和分组查询的问题，经过一番探索，总算是找到了解决方法，特地记录一下，以方便日后翻阅。">
+<meta name="keywords" content="后端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Laravel Eloquent 时间日期比较和分组">
+<meta property="og:url" content="https://4ark.me/post/3e85f2e1.html">
+<meta property="og:site_name" content="4Ark&#39; Blog">
+<meta property="og:description" content="最近在做一个订单日收入模块的时候，涉及到日期比较和分组查询的问题，经过一番探索，总算是找到了解决方法，特地记录一下，以方便日后翻阅。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-03-11T11:38:32.702Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Laravel Eloquent 时间日期比较和分组">
+<meta name="twitter:description" content="最近在做一个订单日收入模块的时候，涉及到日期比较和分组查询的问题，经过一番探索，总算是找到了解决方法，特地记录一下，以方便日后翻阅。">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+  <link href="/plugins/prettify/prettify.css" rel="stylesheet">
+
+
+<!--百度统计-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b733e1eaeacbf8f87d3be047f28c3973";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+    <title> Laravel Eloquent 时间日期比较和分组 - 4Ark' Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">4Ark' Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Laravel Eloquent 时间日期比较和分组
+        
+      </h1>
+
+      <time class="post-time">
+          2019-02-12
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <div class="excerpt"><br>    最近在做一个订单日收入模块的时候，涉及到日期比较和分组查询的问题，经过一番探索，总算是找到了解决方法，特地记录一下，以方便日后翻阅。<br></div>
+
+<a id="more"></a>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近在做一个订单日收入模块的时候，涉及到日期比较和分组查询的问题，经过一番探索，总算是找到了解决方法，特地记录一下，以方便日后翻阅。</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>假设我们有一个<code>orders</code>表，数据如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">id</th>
+<th style="text-align:center">amout</th>
+<th style="text-align:center">created_at</th>
+<th style="text-align:center">updated_at</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">100</td>
+<td style="text-align:center">2019-01-01</td>
+<td style="text-align:center">2019-01-01</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">100</td>
+<td style="text-align:center">2019-01-01</td>
+<td style="text-align:center">2019-01-01</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">200</td>
+<td style="text-align:center">2019-01-02</td>
+<td style="text-align:center">2019-01-02</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">200</td>
+<td style="text-align:center">2019-01-02</td>
+<td style="text-align:center">2019-01-02</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">300</td>
+<td style="text-align:center">2019-01-03</td>
+<td style="text-align:center">2019-01-03</td>
+</tr>
+</tbody>
+</table>
+<p>然后我们有以下需求：</p>
+<ol>
+<li>获取每天的收入情况。</li>
+<li>查询某个日期段（或者是某天）的订单，并显示各天的收入情况。</li>
+</ol>
+<h3 id="获取每天的收入情况"><a href="#获取每天的收入情况" class="headerlink" title="获取每天的收入情况"></a>获取每天的收入情况</h3><p>其实这个问题的难点就在于如何按照日期来分组，我的解决方案如下：</p>
+<pre><code class="php">public function getIncome(Request $request){
+    $list = Order::query() // 这里可以用 where 先限制一些条件
+                -&gt;select(
+                    DB::raw(&#39;Date(created_at) as date&#39;),
+                    DB::raw(&#39;COUNT(id) as count&#39;),
+                    DB::raw(&#39;SUM(amount) as income&#39;)
+                );
+    return $list-&gt;groupBy(&#39;date&#39;)
+                -&gt;orderBy(&#39;date&#39;, &#39;DESC&#39;)
+                -&gt;get();
+}
+</code></pre>
+<p>返回结果如下：</p>
+<pre><code class="json">[
+  {
+    &quot;date&quot;: &quot;2019-01-03&quot;,
+    &quot;count&quot;: 1,
+    &quot;income&quot;: 300
+  },
+  {
+    &quot;date&quot;: &quot;2019-01-02&quot;,
+    &quot;count&quot;: 2,
+    &quot;income&quot;: 400
+  },
+  {
+    &quot;date&quot;: &quot;2019-01-01&quot;,
+    &quot;count&quot;: 2,
+    &quot;income&quot;: 200
+  }
+]
+</code></pre>
+<h3 id="获取某个日期段的各天收入情况"><a href="#获取某个日期段的各天收入情况" class="headerlink" title="获取某个日期段的各天收入情况"></a>获取某个日期段的各天收入情况</h3><p>这里就涉及到日期比较了，因此我们可以使用<code>whereDate</code>方法。</p>
+<p><strong>注</strong> ：</p>
+<blockquote>
+<p><code>whereDate</code>方法只能在 <code>Laravel 5.0</code>之后才能使用。</p>
+<p>关于更多类似日期方法可以访问: <a href="https://www.cnblogs.com/huangshoushi/p/5875022.html" target="_blank" rel="noopener">链接</a></p>
+</blockquote>
+<p>我们需要接受两个参数：</p>
+<pre><code class="php">public function getIncome(Request $request){
+    $list = Order::query() // 这里可以用 where 先限制一些条件
+                -&gt;select(
+                    DB::raw(&#39;Date(created_at) as date&#39;),
+                    DB::raw(&#39;COUNT(id) as count&#39;),
+                    DB::raw(&#39;SUM(amount) as income&#39;)
+                );
+    if ($request-&gt;has(&#39;date&#39;)){
+            $date = $request-&gt;input(&#39;date&#39;);
+            $list = $list-&gt;whereDate(&#39;created_at&#39;,&#39;&gt;=&#39;,$date[0])
+                         -&gt;whereDate(&#39;created_at&#39;,&#39;&lt;=&#39;,$date[1]);
+    }
+    return $list-&gt;groupBy(&#39;date&#39;)
+                -&gt;orderBy(&#39;date&#39;, &#39;DESC&#39;)
+                -&gt;get();
+}
+</code></pre>
+<p>返回结果：</p>
+<pre><code class="json">[
+  {
+    &quot;date&quot;: &quot;2019-01-02&quot;,
+    &quot;count&quot;: 2,
+    &quot;income&quot;: 400
+  },
+  {
+    &quot;date&quot;: &quot;2019-01-01&quot;,
+    &quot;count&quot;: 2,
+    &quot;income&quot;: 200
+  }
+]
+</code></pre>
+<h3 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h3><h4 id="获取当天"><a href="#获取当天" class="headerlink" title="获取当天"></a>获取当天</h4><p>获取当天可以这样：</p>
+<pre><code class="php">Order-&gt;whereDate(&#39;created_at&#39;, date(&quot;Y-m-d&quot;));
+</code></pre>
+<h4 id="满足其他条件"><a href="#满足其他条件" class="headerlink" title="满足其他条件"></a>满足其他条件</h4><p>假设我们还要当天总收入超过多少才行，我们可以这样：</p>
+<pre><code class="php">$list = $list-&gt;havingRaw(&#39;SUM(amount) &#39; . &#39;&gt;&#39; . &#39; &#39; . $minAmount);
+</code></pre>
+<p>或者需要当订单数量超过多少：</p>
+<pre><code class="php">$list = $list-&gt;havingRaw(&#39;COUNT(id) &#39; . &#39;&gt;&#39; . &#39; &#39; . $minCount);
+</code></pre>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>当然，我这个可能不是最佳方案，如果您有更好的方法，还请多多指教。</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <span>本文作者：</span>4Ark
+        </li>
+        <li class="post-copyright-link">
+          <span>本文链接：</span>
+          <a href="https://4ark.me//post/3e85f2e1.html" title="Laravel Eloquent 时间日期比较和分组">https://4ark.me/post/3e85f2e1.html</a>
+        </li>
+        <li class="post-copyright-license">
+          <span>版权： </span>
+          本站文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/后端/">后端</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/post/549a6198.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">分享一些好用的 Chrome 扩展</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/post/a12c2740.html">
+        <span class="next-text nav-default">分享一些好用的网站</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+      
+        
+
+
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+
+    <div id="gitalk-container"></div>
+
+    <script>
+        var gitalk = new Gitalk({
+            clientID: 'ca4ae20760cf27ad5c6c',
+            clientSecret: '671788fb8d6aed08906b70340a8ba3088ec03f39',
+            repo: 'gd4Ark.github.io',
+            owner: 'gd4Ark',
+            admin: 'gd4Ark',
+            id: location.pathname,      // Ensure uniqueness and length less than 50
+            distractionFreeMode: 'false'  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+
+
+      
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2018 -
+    
+    2019
+    <span class="footer-author">4Ark.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+<!--prettify代码高亮脚本引入-->
+
+    <script src="/plugins/prettify/prettify.js"></script>
+    <script type="text/javascript">
+    jQuery(function($){
+        $('pre').addClass('prettyprint');
+        prettyPrint();
+    });
+    </script>
+
+
+  </body>
+</html>

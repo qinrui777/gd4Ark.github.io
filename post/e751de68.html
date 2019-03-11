@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc">
+<meta name="baidu-site-verification" content="hkLiBHH93D">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Win2008 R2 FTP 服务器实训">
+
+
+
+
+  <meta name="keywords" content="网络,">
+
+
+
+
+  <link rel="alternate" href="/default" title="4Ark' Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://4ark.me/post/e751de68.html">
+
+
+<meta name="description" content="题目要求使用 IIS 服务器搭建 FTP服务，具体： 在根目录ftp_root下，创建两个子目录pub和root。 其中：  ftp_user用户对两个子目录均有完全控制权限。 匿名用户对pub有写权限（只能创建，不能修改或删除），对root有读权限。 在根目录只有读权限。  环境说明本次实训的服务器安装在虚拟机上，通过桥接模式，在本机上进行测试。 这里假设你已经安装好 IIS以及FTP服务器，并">
+<meta name="keywords" content="网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Win2008 R2 FTP 服务器实训">
+<meta property="og:url" content="https://4ark.me/post/e751de68.html">
+<meta property="og:site_name" content="4Ark&#39; Blog">
+<meta property="og:description" content="题目要求使用 IIS 服务器搭建 FTP服务，具体： 在根目录ftp_root下，创建两个子目录pub和root。 其中：  ftp_user用户对两个子目录均有完全控制权限。 匿名用户对pub有写权限（只能创建，不能修改或删除），对root有读权限。 在根目录只有读权限。  环境说明本次实训的服务器安装在虚拟机上，通过桥接模式，在本机上进行测试。 这里假设你已经安装好 IIS以及FTP服务器，并">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-03-11T11:38:32.703Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Win2008 R2 FTP 服务器实训">
+<meta name="twitter:description" content="题目要求使用 IIS 服务器搭建 FTP服务，具体： 在根目录ftp_root下，创建两个子目录pub和root。 其中：  ftp_user用户对两个子目录均有完全控制权限。 匿名用户对pub有写权限（只能创建，不能修改或删除），对root有读权限。 在根目录只有读权限。  环境说明本次实训的服务器安装在虚拟机上，通过桥接模式，在本机上进行测试。 这里假设你已经安装好 IIS以及FTP服务器，并">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+  <link href="/plugins/prettify/prettify.css" rel="stylesheet">
+
+
+<!--百度统计-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b733e1eaeacbf8f87d3be047f28c3973";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+    <title> Win2008 R2 FTP 服务器实训 - 4Ark' Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">4Ark' Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Win2008 R2 FTP 服务器实训
+        
+      </h1>
+
+      <time class="post-time">
+          2018-11-13
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>要求使用 <code>IIS</code> 服务器搭建 <code>FTP</code>服务，具体：</p>
+<p>在根目录<code>ftp_root</code>下，创建两个子目录<code>pub</code>和<code>root</code>。</p>
+<p>其中：</p>
+<ol>
+<li><code>ftp_user</code>用户对两个子目录均有完全控制权限。</li>
+<li>匿名用户对<code>pub</code>有写权限（只能创建，不能修改或删除），对<code>root</code>有读权限。</li>
+<li>在根目录只有读权限。</li>
+</ol>
+<h2 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h2><p>本次实训的服务器安装在虚拟机上，通过桥接模式，在本机上进行测试。</p>
+<p>这里假设你已经安装好 <code>IIS</code>以及<code>FTP</code>服务器，并且按题目要求创建好目录以及用户（<code>ftp_user</code>）。</p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><h3 id="创建FTP服务器"><a href="#创建FTP服务器" class="headerlink" title="创建FTP服务器"></a>创建FTP服务器</h3><p>1、创建 <code>FTP</code> 站点</p>
+<ul>
+<li>打开 <code>IIS</code>-&gt; 展开主机名-&gt; 网站 -&gt; 右键 -&gt; 添加 <code>FTP</code>站点</li>
+</ul>
+<p>2、填写站点信息</p>
+<ul>
+<li>填写站点名称 -&gt; 选择物理路径（你的ftp根目录） -&gt; 下一步</li>
+</ul>
+<p>3、绑定和SSL设置</p>
+<ul>
+<li>填写 你的IP 地址 -&gt; 端口默认（21） -&gt; SSL（无） -&gt; 下一步</li>
+</ul>
+<p>4、身份验证与授权信息</p>
+<ul>
+<li>这里我们后面再设置，直接完成</li>
+</ul>
+<h3 id="配置相关权限"><a href="#配置相关权限" class="headerlink" title="配置相关权限"></a>配置相关权限</h3><h4 id="1、根目录的权限"><a href="#1、根目录的权限" class="headerlink" title="1、根目录的权限"></a>1、根目录的权限</h4><p>点击左侧 ftp 站点（小地球图标），在 ftp 主页点击身份验证，勾选基本和匿名。</p>
+<p>在 ftp 主页点击授权规则，添加两个允许规则</p>
+<ul>
+<li>所有匿名用户，权限是读取，完成</li>
+<li>指定的用户，填写上面创建的用户<code>ftp_users</code>，权限是读取，完成</li>
+</ul>
+<blockquote>
+<p>如果配置正常，<code>FTP</code> 已经可以访问（通过基本验证和匿名登录）</p>
+</blockquote>
+<h4 id="2、pub-目录的权限"><a href="#2、pub-目录的权限" class="headerlink" title="2、pub 目录的权限"></a>2、pub 目录的权限</h4><p>展开左侧ftp站点（小地球图标），点击<code>pub</code>，在pub主页点击授权规则，把两个规则的权限都改成：读取和写入。</p>
+<h5 id="配置匿名用户的权限"><a href="#配置匿名用户的权限" class="headerlink" title="配置匿名用户的权限"></a>配置匿名用户的权限</h5><p>再点左侧<code>pub</code>，右侧操作 -&gt; 编辑权限 -&gt; 安全 -&gt; 编辑 -&gt; 添加 -&gt; 输入 <code>IUSR</code> -&gt; 确定</p>
+<p>接着上面，高级 -&gt; <code>IUSR</code> -&gt; 更改权限  -&gt; 编辑 ，权限设置如下：</p>
+<ul>
+<li>允许 ： 完全控制</li>
+<li>拒绝 ：<ul>
+<li>删除子文件夹及文件</li>
+<li>删除</li>
+<li>更改权限</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>可以测试下 在匿名登录下，<code>pub</code> 目录是否只能创建不能删除或修改</p>
+</blockquote>
+<h5 id="配置基本用户的权限"><a href="#配置基本用户的权限" class="headerlink" title="配置基本用户的权限"></a>配置基本用户的权限</h5><p>接着上面 -&gt; 编辑权限 -&gt; 安全 -&gt; 编辑 -&gt; 添加 -&gt; 输入 <code>ftp_user</code> -&gt; 允许（完全控制） -&gt; 确定</p>
+<blockquote>
+<p>可以测试下 在基本登录下，是否对<code>pub</code>目录完全控制权限</p>
+</blockquote>
+<h4 id="3、root-目录的权限"><a href="#3、root-目录的权限" class="headerlink" title="3、root 目录的权限"></a>3、root 目录的权限</h4><p>展开左侧ftp站点（小地球图标），点击<code>root</code>，在root主页点击授权规则，把基本用户规则的权限改成：读取和写入。</p>
+<h5 id="配置基本用户的权限-1"><a href="#配置基本用户的权限-1" class="headerlink" title="配置基本用户的权限"></a>配置基本用户的权限</h5><p>接着上面 -&gt; 编辑权限 -&gt; 安全 -&gt; 编辑 -&gt; 添加 -&gt; 输入 <code>ftp_user</code> -&gt; 允许（完全控制） -&gt; 确定</p>
+<blockquote>
+<p>在基本登录下，是否对<code>root</code>目录完全控制权限</p>
+</blockquote>
+<h2 id="遇到的坑"><a href="#遇到的坑" class="headerlink" title="遇到的坑"></a>遇到的坑</h2><p>实训过程中，遇到了几个坑，记录一下。</p>
+<h4 id="虚拟主机名"><a href="#虚拟主机名" class="headerlink" title="虚拟主机名"></a>虚拟主机名</h4><h5 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h5><p>在我创建 <code>FTP</code>服务时，填写了一个虚拟主机名（想要通过域名访问），结果发现，无论是域名还是 IP 都无法打开，提示无法访问文件夹。</p>
+<h5 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h5><blockquote>
+<p>对于虚拟主机名，FTP客户端需要使用带有“ <strong>ftp.contoso.com | username</strong> ” 等语法的管道（垂直线）字符来指定其登录凭据。<a href="https://forums.iis.net/t/1226421.aspx?Enable+Virtual+Host+Name" target="_blank" rel="noopener">链接</a></p>
+</blockquote>
+<h5 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h5><p>答案自然是删除虚拟主机名。</p>
+<p>在<code>ftp</code>主页右侧  -&gt; 绑定</p>
+<h4 id="域名"><a href="#域名" class="headerlink" title="域名"></a>域名</h4><h5 id="问题-1"><a href="#问题-1" class="headerlink" title="问题"></a>问题</h5><p>前一个问题中提到，想要添加一个域名访问，但除了虚拟主机名，我们还能用什么方法呢？</p>
+<h5 id="解决-1"><a href="#解决-1" class="headerlink" title="解决"></a>解决</h5><p>经过尝试，我发现直接在<code>DNS</code>服务器中添加一个主机头为<code>ftp</code>的记录即可。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总的来说，在 Win2008 上搭建一个服务器不算太难，但相对于用鼠标操作，我更倾心于在 <code>Linux</code>上用命令完成。</p>
+<p>感谢您的观看，希望能对您有帮助。</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <span>本文作者：</span>4Ark
+        </li>
+        <li class="post-copyright-link">
+          <span>本文链接：</span>
+          <a href="https://4ark.me//post/e751de68.html" title="Win2008 R2 FTP 服务器实训">https://4ark.me/post/e751de68.html</a>
+        </li>
+        <li class="post-copyright-license">
+          <span>版权： </span>
+          本站文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/网络/">网络</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/post/abb77fd2.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">CSS题目系列（1） - 可滚动的Table</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/post/28baf5fd.html">
+        <span class="next-text nav-default">解决 Windows 中设置静态 IP 却始终变回 DHCP 获取问题</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+      
+        
+
+
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+
+    <div id="gitalk-container"></div>
+
+    <script>
+        var gitalk = new Gitalk({
+            clientID: 'ca4ae20760cf27ad5c6c',
+            clientSecret: '671788fb8d6aed08906b70340a8ba3088ec03f39',
+            repo: 'gd4Ark.github.io',
+            owner: 'gd4Ark',
+            admin: 'gd4Ark',
+            id: location.pathname,      // Ensure uniqueness and length less than 50
+            distractionFreeMode: 'false'  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+
+
+      
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2018 -
+    
+    2019
+    <span class="footer-author">4Ark.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+<!--prettify代码高亮脚本引入-->
+
+    <script src="/plugins/prettify/prettify.js"></script>
+    <script type="text/javascript">
+    jQuery(function($){
+        $('pre').addClass('prettyprint');
+        prettyPrint();
+    });
+    </script>
+
+
+  </body>
+</html>
