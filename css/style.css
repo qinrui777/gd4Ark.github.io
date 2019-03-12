@@ -975,7 +975,7 @@ body {
   max-width: 300px; }
 
 code {
-  font-size: .9em;
+  font-size: 0.9em;
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace; }
 
 .excerpt code,
@@ -998,7 +998,7 @@ code {
 
 @media screen and (max-width: 600px) {
   .prettyprint code {
-    font-size: .8em; } }
+    font-size: 0.8em; } }
 
 .prettyprint code.html::before {
   content: "HTML"; }
@@ -1089,3 +1089,5 @@ code {
   width: 85%;
   max-width: 1000px;
   margin: 0 auto; }
+  #gitalk-container .gt-initing-text {
+    text-align: center; }
