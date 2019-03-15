@@ -978,8 +978,7 @@ code {
   font-size: 0.9em;
   font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace; }
 
-.excerpt code,
-.post .post-content code:not([class]) {
+.excerpt code {
   padding: 0px 4px;
   background: rgba(27, 31, 35, 0.05);
   border-radius: 4px; }
@@ -988,9 +987,10 @@ code {
   position: relative; }
 
 .prettyprint code {
+  padding: 0px 4px;
+  padding: 12px;
   display: block;
   overflow-x: auto;
-  padding: 12px;
   border: 1px solid #e7eaed;
   background: #f6f8fa;
   border-radius: 4px;
