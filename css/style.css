@@ -987,7 +987,6 @@ code {
   position: relative; }
 
 .prettyprint code {
-  padding: 0px 4px;
   padding: 12px;
   display: block;
   overflow-x: auto;
