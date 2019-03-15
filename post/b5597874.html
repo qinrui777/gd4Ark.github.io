@@ -36,18 +36,18 @@
 <link rel="canonical" href="https://4ark.me/post/b5597874.html">
 
 
-<meta name="description" content="继上一篇《理解 JavaScript 中的作用域》后，我又立刻写下了这篇文章，因为这两者是存在关联的，在理解闭包前，你需要知道作用域。">
+<meta name="description" content="继上一篇《理解 JavaScript 中的作用域》后，我又立刻写下了这篇文章，因为这两者是存在关联的，在理解闭包前，你需要知道作用域。  前言继上一篇《理解 JavaScript 中的作用域》后，我又立刻写下了这篇文章，因为这两者是存在关联的，在理解闭包前，你需要知道作用域。 而对于那些有一点 JavaScript 使用经验的人来说，理解闭包可以看做是某种意义上的重生，但这并不简单，你需要">
 <meta name="keywords" content="前端">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解 JavaScript 中的闭包">
 <meta property="og:url" content="https://4ark.me/post/b5597874.html">
 <meta property="og:site_name" content="4Ark&#39; Blog">
-<meta property="og:description" content="继上一篇《理解 JavaScript 中的作用域》后，我又立刻写下了这篇文章，因为这两者是存在关联的，在理解闭包前，你需要知道作用域。">
+<meta property="og:description" content="继上一篇《理解 JavaScript 中的作用域》后，我又立刻写下了这篇文章，因为这两者是存在关联的，在理解闭包前，你需要知道作用域。  前言继上一篇《理解 JavaScript 中的作用域》后，我又立刻写下了这篇文章，因为这两者是存在关联的，在理解闭包前，你需要知道作用域。 而对于那些有一点 JavaScript 使用经验的人来说，理解闭包可以看做是某种意义上的重生，但这并不简单，你需要">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-11T11:38:32.707Z">
+<meta property="og:updated_time" content="2019-03-15T05:47:59.711Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解 JavaScript 中的闭包">
-<meta name="twitter:description" content="继上一篇《理解 JavaScript 中的作用域》后，我又立刻写下了这篇文章，因为这两者是存在关联的，在理解闭包前，你需要知道作用域。">
+<meta name="twitter:description" content="继上一篇《理解 JavaScript 中的作用域》后，我又立刻写下了这篇文章，因为这两者是存在关联的，在理解闭包前，你需要知道作用域。  前言继上一篇《理解 JavaScript 中的作用域》后，我又立刻写下了这篇文章，因为这两者是存在关联的，在理解闭包前，你需要知道作用域。 而对于那些有一点 JavaScript 使用经验的人来说，理解闭包可以看做是某种意义上的重生，但这并不简单，你需要">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -146,7 +146,8 @@ var _hmt = _hmt || [];
 
     
             <div class="post-content">
-            <p><div class="excerpt"><br>    继上一篇《理解 JavaScript 中的作用域》后，我又立刻写下了这篇文章，因为这两者是存在关联的，在理解闭包前，你需要知道作用域。<br></div><br><a id="more"></a></p>
+            <div class="excerpt"><br>    继上一篇《理解 JavaScript 中的作用域》后，我又立刻写下了这篇文章，因为这两者是存在关联的，在理解闭包前，你需要知道作用域。<br></div>
+
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>继上一篇《理解 JavaScript 中的作用域》后，我又立刻写下了这篇文章，因为这两者是存在关联的，在理解闭包前，你需要知道作用域。</p>
 <p>而对于那些有一点 JavaScript 使用经验的人来说，理解闭包可以看做是某种意义上的重生，但这并不简单，你需要付出非常多的努力和牺牲才能理解这个概念。</p>
 <p>如果你理解了闭包，你会发现即便是没理解闭包之前，你也用到了闭包，但我们要做的就是根据自己的意愿正确地识别、使用闭包。</p>
