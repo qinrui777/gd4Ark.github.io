@@ -978,9 +978,9 @@ code {
   font-size: 0.9em;
   font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace; }
 
-.excerpt code {
+.excerpt code, .post-content code {
   padding: 0px 4px;
-  background: rgba(27, 31, 35, 0.05);
+  background: #f6f8fa;
   border-radius: 4px; }
 
 .prettyprint {
@@ -992,7 +992,6 @@ code {
   overflow-x: auto;
   border: 1px solid #e7eaed;
   background: #f6f8fa;
-  border-radius: 4px;
   font-size: 85%;
   line-height: 1.7; }
 
