@@ -36,18 +36,18 @@
 <link rel="canonical" href="https://4ark.me/post/618b271f.html">
 
 
-<meta name="description" content="今天碰到过这样一个情况，我需要限制用户请求某个API接口的频率，比如登录、反馈等提交操作，经过一番搜索+折腾，总算是实现了。   前言今天碰到过这样一个情况，我需要限制用户请求某个API接口的频率，比如登录、反馈等提交操作，经过一番搜索+折腾，总算是实现了。  在Laravel 5.2的新特性中增加了一个throttle中间件，通过它可以在路由层限制API访问的频率。例如限制频率为1分钟5">
+<meta name="description" content="今天碰到过这样一个情况，我需要限制用户请求某个API接口的频率，比如登录、反馈等提交操作，经过一番搜索+折腾，总算是实现了。">
 <meta name="keywords" content="后端">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Lumen 使用 throttle 限制接口访问频率">
 <meta property="og:url" content="https://4ark.me/post/618b271f.html">
 <meta property="og:site_name" content="4Ark&#39; Blog">
-<meta property="og:description" content="今天碰到过这样一个情况，我需要限制用户请求某个API接口的频率，比如登录、反馈等提交操作，经过一番搜索+折腾，总算是实现了。   前言今天碰到过这样一个情况，我需要限制用户请求某个API接口的频率，比如登录、反馈等提交操作，经过一番搜索+折腾，总算是实现了。  在Laravel 5.2的新特性中增加了一个throttle中间件，通过它可以在路由层限制API访问的频率。例如限制频率为1分钟5">
+<meta property="og:description" content="今天碰到过这样一个情况，我需要限制用户请求某个API接口的频率，比如登录、反馈等提交操作，经过一番搜索+折腾，总算是实现了。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-15T05:47:59.710Z">
+<meta property="og:updated_time" content="2019-03-26T11:29:41.537Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Lumen 使用 throttle 限制接口访问频率">
-<meta name="twitter:description" content="今天碰到过这样一个情况，我需要限制用户请求某个API接口的频率，比如登录、反馈等提交操作，经过一番搜索+折腾，总算是实现了。   前言今天碰到过这样一个情况，我需要限制用户请求某个API接口的频率，比如登录、反馈等提交操作，经过一番搜索+折腾，总算是实现了。  在Laravel 5.2的新特性中增加了一个throttle中间件，通过它可以在路由层限制API访问的频率。例如限制频率为1分钟5">
+<meta name="twitter:description" content="今天碰到过这样一个情况，我需要限制用户请求某个API接口的频率，比如登录、反馈等提交操作，经过一番搜索+折腾，总算是实现了。">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -149,6 +149,7 @@ var _hmt = _hmt || [];
             <div class="excerpt"><br>    今天碰到过这样一个情况，我需要限制用户请求某个<code>API</code>接口的频率，比如登录、反馈等提交操作，经过一番搜索+折腾，总算是实现了。<br></div>
 
 
+<a id="more"></a>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天碰到过这样一个情况，我需要限制用户请求某个<code>API</code>接口的频率，比如登录、反馈等提交操作，经过一番搜索+折腾，总算是实现了。</p>
 <blockquote>
 <p>在<code>Laravel 5.2</code>的新特性中增加了一个<code>throttle</code>中间件，通过它可以在路由层限制<code>API</code>访问的频率。例如限制频率为1分钟50次，如果一分钟内超过了这个限制，它就会响应：429: Too Many Attempts。</p>

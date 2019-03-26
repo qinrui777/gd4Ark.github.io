@@ -36,18 +36,18 @@
 <link rel="canonical" href="https://4ark.me/post/834cec76.html">
 
 
-<meta name="description" content="最近在做一个项目，需要多表认证，分别为admin和user表，我采用的JWT认证方式，但今天遇到了一个问题：使用Auth::user()返回null，也就是说无法获得当前认证的用户。   问题描述最近在做一个项目，需要多表认证，分别为admin和user表，我采用的JWT认证方式，但今天遇到了一个问题：使用Auth::user()返回null，也就是说无法获得当前认证的用户。 网上搜索后，">
+<meta name="description" content="最近在做一个项目，需要多表认证，分别为admin和user表，我采用的JWT认证方式，但今天遇到了一个问题：使用Auth::user()返回null，也就是说无法获得当前认证的用户。">
 <meta name="keywords" content="后端">
 <meta property="og:type" content="article">
 <meta property="og:title" content="解决 Laravel JWT 多表认证时获取不到当前认证用户的问题">
 <meta property="og:url" content="https://4ark.me/post/834cec76.html">
 <meta property="og:site_name" content="4Ark&#39; Blog">
-<meta property="og:description" content="最近在做一个项目，需要多表认证，分别为admin和user表，我采用的JWT认证方式，但今天遇到了一个问题：使用Auth::user()返回null，也就是说无法获得当前认证的用户。   问题描述最近在做一个项目，需要多表认证，分别为admin和user表，我采用的JWT认证方式，但今天遇到了一个问题：使用Auth::user()返回null，也就是说无法获得当前认证的用户。 网上搜索后，">
+<meta property="og:description" content="最近在做一个项目，需要多表认证，分别为admin和user表，我采用的JWT认证方式，但今天遇到了一个问题：使用Auth::user()返回null，也就是说无法获得当前认证的用户。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-15T05:47:59.754Z">
+<meta property="og:updated_time" content="2019-03-26T11:29:41.552Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解决 Laravel JWT 多表认证时获取不到当前认证用户的问题">
-<meta name="twitter:description" content="最近在做一个项目，需要多表认证，分别为admin和user表，我采用的JWT认证方式，但今天遇到了一个问题：使用Auth::user()返回null，也就是说无法获得当前认证的用户。   问题描述最近在做一个项目，需要多表认证，分别为admin和user表，我采用的JWT认证方式，但今天遇到了一个问题：使用Auth::user()返回null，也就是说无法获得当前认证的用户。 网上搜索后，">
+<meta name="twitter:description" content="最近在做一个项目，需要多表认证，分别为admin和user表，我采用的JWT认证方式，但今天遇到了一个问题：使用Auth::user()返回null，也就是说无法获得当前认证的用户。">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -148,7 +148,7 @@ var _hmt = _hmt || [];
             <div class="post-content">
             <div class="excerpt"><br>    最近在做一个项目，需要多表认证，分别为<code>admin</code>和<code>user</code>表，我采用的<code>JWT</code>认证方式，但今天遇到了一个问题：使用<code>Auth::user()</code>返回<code>null</code>，也就是说无法获得当前认证的用户。<br></div>
 
-
+<a id="more"></a>
 <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>最近在做一个项目，需要多表认证，分别为<code>admin</code>和<code>user</code>表，我采用的<code>JWT</code>认证方式，但今天遇到了一个问题：使用<code>Auth::user()</code>返回<code>null</code>，也就是说无法获得当前认证的用户。</p>
 <p>网上搜索后，并没有找到直接的解决方案，然后经过几次尝试居然误打误撞地解决了，所以特地记录下来，希望遇到同样问题的人不要再在这问题上耗费太多时间。</p>
 <p><strong>注意：</strong>这里并不介绍<code>JWT</code>的工作原理和配置，如果想理解更多请参考以下文章：</p>
